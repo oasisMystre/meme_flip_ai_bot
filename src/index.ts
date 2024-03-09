@@ -2,8 +2,11 @@ import "dotenv/config";
 
 import { readFileSync } from "fs";
 import { fastify } from "fastify";
+import cors from "@fastify/cors";
+
 import { Message } from "telegraf/types";
 import { Context, Markup, Telegraf } from "telegraf";
+
 import { imagekitRoute } from "./routes/imagekit.route";
 
 function createBot(accessToken: string) {
@@ -55,7 +58,11 @@ export async function main() {
   const app = fastify({
     logger: true,
     ignoreTrailingSlash: true,
-    ignoreDuplicateSlashes: true
+    ignoreDuplicateSlashes: true,
+  });
+
+  await app.register(cors, {
+    origin: "*",
   });
 
   const bot = createBot(process.env.TELEGRAM_API_KEY!);
