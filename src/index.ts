@@ -2,8 +2,9 @@ import "dotenv/config";
 
 import { readFileSync } from "fs";
 import { fastify } from "fastify";
-import { Update, Message } from "telegraf/types";
+import { Message } from "telegraf/types";
 import { Context, Markup, Telegraf } from "telegraf";
+import { imagekitRoute } from "./routes/imagekit.route";
 
 function createBot(accessToken: string) {
   const bot = new Telegraf(accessToken);
@@ -53,6 +54,8 @@ function createBot(accessToken: string) {
 export async function main() {
   const app = fastify({
     logger: true,
+    ignoreTrailingSlash: true,
+    ignoreDuplicateSlashes: true
   });
 
   const bot = createBot(process.env.TELEGRAM_API_KEY!);
@@ -61,6 +64,7 @@ export async function main() {
     domain: process.env.RENDER_EXTERNAL_HOSTNAME,
   })) as any;
 
+  imagekitRoute(app);
   app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
 
   try {
