@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: memeai
+    branch: main
+    plan: starter
+    domains:
+      - memeai.onrender.com
+    envVars:
+      - fromGroup: memeai
+    runtime: node
+    startCommand: pnpm start
+    buildCommand: pnpm install && pnpm build
+    
