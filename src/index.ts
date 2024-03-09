@@ -56,10 +56,20 @@ export async function main() {
   });
 
   const bot = createBot(process.env.TELEGRAM_API_KEY!);
-  bot.launch();
+  const port = Number(process.env.PORT);
+  const webhook = (await bot.createWebhook({
+    domain: process.env.RENDER_EXTERNAL_HOSTNAME,
+  })) as any;
 
-  process.once("SIGINT", () => bot.stop("SIGINT"));
-  process.once("SIGTERM", () => bot.stop("SIGTERM"));
+  app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
+
+  try {
+    await app.listen({ port, host: "0.0.0.0" });
+    console.log("Listening on port", port);
+  } catch (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
 }
 
 main().catch(console.log);
