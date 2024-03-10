@@ -5,8 +5,9 @@ import { fastify } from "fastify";
 import cors from "@fastify/cors";
 
 import { Message } from "telegraf/types";
-import { Context, Markup, Telegraf } from "telegraf";
+import { Context, Markup, Telegraf, Input } from "telegraf";
 
+import type { WebAppData, ImageKit } from "./types";
 import { imagekitRoute } from "./routes/imagekit.route";
 
 function createBot(accessToken: string) {
@@ -39,7 +40,17 @@ function createBot(accessToken: string) {
   ]);
 
   bot.start(echo);
-  // bot.on("message", echo);
+  bot.on("message", echo);
+  bot.on("web_app_data", (ctx) => {
+    const { command, response } = JSON.parse(
+      ctx.message.web_app_data.data
+    ) as WebAppData<ImageKit>;
+    if (command === "echo-imagekit") {
+      ctx.replyWithPhoto(Input.fromURL(response.url), {
+        caption: "Meme output generated using MemeAI",
+      });
+    }
+  });
   bot.command("help", (ctx) => {
     ctx.replyWithMarkdownV2(
       readFileSync("./help.md", "utf-8")

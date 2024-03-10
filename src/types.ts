@@ -5,3 +5,13 @@ export type Photo = {
   width: number;
   height: number;
 };
+
+export type WebAppData<T> = {
+  command: string,
+  response: T,
+}
+
+export type ImageKit = {
+  url: string,
+  name: string,
+}
