@@ -40,26 +40,39 @@ function createBot(accessToken: string) {
   ]);
 
   bot.start(echo);
-  bot.on("message", echo);
-  bot.on("web_app_data", (ctx) => {
+
+  const onWebData = (ctx: Context) => {
     const { command, response } = JSON.parse(
-      ctx.message.web_app_data.data
+      (ctx.message as Message.WebAppDataMessage).web_app_data.data
     ) as WebAppData<ImageKit>;
     if (command === "echo-imagekit") {
       ctx.replyWithPhoto(Input.fromURL(response.url), {
         caption: "Meme output generated using MemeAI",
       });
     }
-  });
-  bot.command("help", (ctx) => {
+  };
+
+  const onHelp = (ctx: Context) => {
     ctx.replyWithMarkdownV2(
       readFileSync("./help.md", "utf-8")
         .replace(/\-/g, "\\-")
         .replace(/\./g, "\\.")
     );
-  });
-  bot.command("socials", (ctx) => {
+  };
+
+  const onSocials = (ctx: Context) => {
     ctx.replyWithMarkdownV2(readFileSync("./socials.md", "utf-8"));
+  };
+
+  bot.on("message", (ctx) => {
+    if ("web_app_data" in ctx.message) return onWebData(ctx);
+    const message = ctx.message as Message.TextMessage;
+    if ("text" in message) {
+      if (message.text === "/socials") return onSocials(ctx);
+      if (message.text === "/help") return onHelp(ctx);
+    }
+
+    return echo(ctx);
   });
 
   return bot;
@@ -86,7 +99,7 @@ export async function main() {
   app.post(`/telegraf/${bot.secretPathComponent()}`, webhook);
 
   try {
-    await app.listen({ port, host: "0.0.0.0" });
+    await app.listen({ port, host: process.env.HOST });
     console.log("Listening on port", port);
   } catch (err) {
     app.log.error(err);
