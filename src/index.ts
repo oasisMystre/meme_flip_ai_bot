@@ -31,7 +31,7 @@ function createBot(accessToken: string) {
   bot.telegram.setMyCommands([
     {
       command: "help",
-      description: "Show sora help",
+      description: "Show memeai help",
     },
     {
       command: "socials",
@@ -64,7 +64,9 @@ function createBot(accessToken: string) {
     ctx.replyWithMarkdownV2(readFileSync("./socials.md", "utf-8"));
   };
 
+
   bot.on("message", (ctx) => {
+    console.log(ctx.message)
     if ("web_app_data" in ctx.message) return onWebData(ctx);
     const message = ctx.message as Message.TextMessage;
     if ("text" in message) {
