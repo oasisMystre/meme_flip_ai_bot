@@ -3,4 +3,4 @@ Join our socials
 [X](https://x.com/memeai)
 
 Or visit our website
-[MemeAI](https://memeai.io)
+[MemeAI](http://maibot.org)
