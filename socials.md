@@ -1,6 +1,6 @@
 Join our socials
-[Telegram](https://t.me/meme_portal)
-[X](https://x.com/memeai)
+[Telegram](https://t.me/memelab)
+[X](https://x.com/memelab)
 
 Or visit our website
-[MemeAI](https://memeai.io)
+[MemeLab](https://memelab.io)

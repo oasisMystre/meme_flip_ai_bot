@@ -1,6 +1,6 @@
-*Meme AI*
+*MemeLab*
 
-Meme AI is a Meme generation tool that helps you customize and create memes.
+MemeLab is a Meme generation tool that helps you customize and create memes.
 
 *How to use?*
 
