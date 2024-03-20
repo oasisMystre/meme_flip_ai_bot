@@ -1,6 +1,6 @@
 Join our socials
-[Telegram](https://t.me/memelab)
-[X](https://x.com/memelab)
+[Telegram](https://t.me/Memelabz)
+[X](https://twitter.com/Memez_Lab)
 
 Or visit our website
-[MemeLab](https://memelab.io)
+[MemeLab](https://memelab.ai/)
